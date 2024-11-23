@@ -1,13 +1,16 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const fetchData = async (url: string) => {
+export async function loadCachedData(setContent: (data: any[]) => void) {
   try {
-    const response = await fetch(url);
-    const data = await response.json();
-    await AsyncStorage.setItem("cachedData", JSON.stringify(data));
-    return data;
+    const cachedData = await AsyncStorage.getItem("cachedContent");
+    if (cachedData) {
+      setContent(JSON.parse(cachedData));
+    }
   } catch (error) {
-    console.error("Error fetching data:", error);
-    return [];
+    console.error("Error loading cached data:", error);
   }
-};
+}
+
+export async function clearCachedContent() {
+  await AsyncStorage.removeItem("cachedContent");
+}

@@ -1,73 +1,42 @@
-import React, { useEffect, useState } from "react";
-import { FlatList, Text, View, RefreshControl, Button } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { fetchData } from "../utils/storage"; // Keep the data-fetching logic in a separate utility file.
+import React, { useState, useEffect } from "react";
+import { FlatList, RefreshControl, StyleSheet } from "react-native";
+import { fetchAndCacheData } from "../utils/fetchData";
+import { loadCachedData } from "../utils/storage";
+import ListItem from "../components/ListItem";
+import Buttons from "../components/Buttons";
 
-const DATA_API = "https://jsonplaceholder.typicode.com/posts";
-
-const Index = () => {
-  const [data, setData] = useState<any[]>([]);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-
-  // Load cached data from AsyncStorage
-  const loadCachedData = async () => {
-    const cachedData = await AsyncStorage.getItem("cachedData");
-    if (cachedData) {
-      setData(JSON.parse(cachedData));
-    }
-  };
-
-  // Refresh data (fetch from API and cache it)
-  const onRefresh = async () => {
-    setIsRefreshing(true);
-    try {
-      const newData = await fetchData(DATA_API); // Fetch data using a utility function
-      setData(newData);
-      await AsyncStorage.setItem("cachedData", JSON.stringify(newData)); // Cache new data
-    } catch (error) {
-      console.error("Error refreshing data:", error);
-    } finally {
-      setIsRefreshing(false);
-    }
-  };
-
-  // Clear the screen but retain cached data
-  const clearData = () => {
-    setData([]);
-  };
+const MainScreen = () => {
+  const [content, setContent] = useState<any[]>([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    loadCachedData(); // Load cached data on mount
+    loadCachedData(setContent);
   }, []);
 
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await fetchAndCacheData(setContent);
+    setRefreshing(false);
+  };
+
+  const handleClear = () => setContent([]);
+  const handleReload = () => loadCachedData(setContent);
+
   return (
-    <View style={{ flex: 1, padding: 16 }}>
-      <Text style={{ marginBottom: 8, fontSize: 18, fontWeight: "bold" }}>
-        Offline-First Notes
-      </Text>
+    <>
       <FlatList
-        data={data}
+        data={content}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <Text
-            style={{
-              padding: 8,
-              borderBottomWidth: 1,
-              borderBottomColor: "#ccc",
-            }}
-          >
-            {item.title}
-          </Text>
+          <ListItem title={item.title} body={item.body} />
         )}
         refreshControl={
-          <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
         }
       />
-      <View style={{ marginTop: 16 }}>
-        <Button title="Clear Screen" onPress={clearData} />
-      </View>
-    </View>
+      <Buttons onClear={handleClear} onReload={handleReload} />
+    </>
   );
 };
 
-export default Index;
+export default MainScreen;
