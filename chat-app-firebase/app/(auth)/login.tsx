@@ -1,13 +1,23 @@
 import React, { useState } from "react";
 import { View, TextInput, Button, StyleSheet, Text } from "react-native";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
+import { FIREBASE_AUTH } from "../../config/FirebaseConfig";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
 
-  const handleLogin = () => {
-    console.log("Login attempted with:", email, password);
+  const handleLogin = async () => {
+    try {
+      await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
+      console.log("Login is successful");
+      router.replace("/tabs/groups"); // Redirect to "groups" tab
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Login failed, Please check your credentials.");
+    }
   };
 
   return (
