@@ -13,7 +13,7 @@ const LoginScreen = () => {
     try {
       await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
       console.log("Login is successful");
-      router.replace("/tabs/groups"); // Redirect to "groups" tab
+      router.replace("/(tabs)/groups"); // Redirect to "groups" tab
     } catch (error) {
       console.error("Login error:", error);
       alert("Login failed, Please check your credentials.");

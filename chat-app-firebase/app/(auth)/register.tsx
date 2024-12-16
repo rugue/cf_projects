@@ -24,7 +24,7 @@ const RegisterScreen = () => {
         username,
         email,
       });
-      router.replace("/tabs/groups"); // Redirect to "groups" tab
+      router.replace("/(tabs)/groups"); // Redirect to "groups" tab
     } catch (error) {
       console.error("Registration error:", error);
       alert("Registration failed. Please try again.");
