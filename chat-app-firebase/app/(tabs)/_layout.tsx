@@ -20,9 +20,11 @@ export default function AppTabs() {
     <Tabs>
       {/* Point to groups/index */}
       <Tabs.Screen
-        name="groups/index"
+        // name="groups/index"
+        name="groups"
         options={{
-          title: "Groups",
+          headerShown: false, // Remove the header
+          // title: "Groups", remove this too
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="people-outline" color={color} size={size} />
           ),
