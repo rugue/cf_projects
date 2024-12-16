@@ -2,8 +2,8 @@ import { useAuth } from "@/context/AuthContext"; // Import the AuthContext
 import { useEffect } from "react";
 import { View, ActivityIndicator } from "react-native"; // Import necessary components
 import { useRouter } from "expo-router"; // Import the router for navigation
-import GroupsScreen from "./groups"; // Import your Groups screen component
-import ProfileScreen from "./profile"; // Import your Profile screen component
+import GroupsScreen from "../groups"; // Import your Groups screen component
+import ProfileScreen from "../profile"; // Import your Profile screen component
 
 const TabsIndex = () => {
   const { user, initialized } = useAuth(); // Get user and initialized state from context
