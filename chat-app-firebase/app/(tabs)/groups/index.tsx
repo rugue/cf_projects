@@ -27,12 +27,6 @@ const TabsIndex = () => {
     );
   }
 
-  return (
-    <View style={{ flex: 1 }}>
-      {/* Render your tab navigation here */}
-      <GroupsScreen /> {/* Render Groups screen */}
-      <ProfileScreen /> {/* Render Profile screen */}
-    </View>
-  );
+  return null;
 };
 export default TabsIndex;

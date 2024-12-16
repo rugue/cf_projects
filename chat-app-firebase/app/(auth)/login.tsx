@@ -11,8 +11,12 @@ const LoginScreen = () => {
 
   const handleLogin = async () => {
     try {
-      await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
-      console.log("Login is successful");
+      const userCredential = await signInWithEmailAndPassword(
+        FIREBASE_AUTH,
+        email,
+        password
+      );
+      console.log("User logged in:", userCredential.user);
       router.replace("/(tabs)/groups"); // Redirect to "groups" tab
     } catch (error) {
       console.error("Login error:", error);

@@ -20,7 +20,7 @@ export default function AppTabs() {
     <Tabs>
       {/* Point to groups/index */}
       <Tabs.Screen
-        name="groups/index.tsx"
+        name="groups/index"
         options={{
           title: "Groups",
           tabBarIcon: ({ color, size }) => (
