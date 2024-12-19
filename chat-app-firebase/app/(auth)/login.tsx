@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { View, TextInput, Button, StyleSheet, Text } from "react-native";
 import { Link, useRouter } from "expo-router";
-import { FIREBASE_AUTH } from "../../config/FirebaseConfig";
+import { FIREBASE_AUTH, FIREBASE_DB } from "../../config/FirebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { registerForPushNotificationsAsync } from "@/utils/NotificationService";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -17,6 +18,13 @@ const LoginScreen = () => {
         password
       );
       console.log("User logged in:", userCredential.user);
+
+      // Get the push notification token
+      const pushToken = await registerForPushNotificationsAsync();
+      if (pushToken) {
+        console.log("User's push token:", pushToken);
+      }
+
       router.replace("/(tabs)/groups"); // Redirect to "groups" tab
     } catch (error) {
       console.error("Login error:", error);
