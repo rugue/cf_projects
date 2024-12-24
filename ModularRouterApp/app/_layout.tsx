@@ -1,17 +1,15 @@
-// app/_layout.tsx
 import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
+import { ThemeProvider } from "../context/ThemeContext";
 
 export default function Layout() {
   return (
-    <>
-      <StatusBar style="auto" />
+    <ThemeProvider>
       <Stack
         screenOptions={{
           headerStyle: { backgroundColor: "#6200ea" },
           headerTintColor: "#fff",
         }}
       />
-    </>
+    </ThemeProvider>
   );
 }
